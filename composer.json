@@ -1,5 +1,5 @@
 {
-    "name": "snoowik/game-framework",
+    "name": "makerus/skeleton-mvc",
     "require": {
         "symfony/var-dumper": "^4.1",
         "doctrine/collections": "^1.5",
