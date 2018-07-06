@@ -1,0 +1,10 @@
+{
+    "name": "snoowik/game-framework",
+    "require": {
+        "symfony/var-dumper": "^4.1",
+        "doctrine/collections": "^1.5",
+        "waavi/sanitizer": "^1.0",
+        "twig/twig": "^2.4",
+        "doctrine/dbal": "^2.7"
+    }
+}
