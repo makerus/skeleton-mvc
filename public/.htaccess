@@ -1,3 +1,5 @@
+RewriteCond %{REQUEST_FILENAME} !^favicon\.ico
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
