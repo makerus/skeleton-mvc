@@ -2,4 +2,7 @@
 
 use system\core\Route;
 
-Route::get('/helloWorld', 'IndexController@index');
+Route::middleware('DemoMiddleware');
+
+Route::get('/', 'IndexController@index');
+Route::get('/:s/:i', 'IndexController@index');

@@ -1,5 +1,5 @@
 Options -Indexes
-RewriteEngine On
 
+RewriteEngine On
 RewriteBase /public/
 RewriteRule ^((?!public/).*)$ /public/$1 [L,NC]

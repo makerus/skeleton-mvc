@@ -40,3 +40,9 @@
 
 - Все папки в каталоге public видны напрямую, например:
 ```http://localhost/folder/file.css``` соответствует ```/public/folder/file.css```
+
+- Добавлен в маршрутизатор - обработчик (Middleware), который запускается до выполнения маршрута. Добавлены примеры добавления обработчика.
+
+- Метод ```Router::middleware($middleware)``` принимает название файла вашего обработчика, в папке ```middleware```. И выполняет метод ```public static function middleware()```.
+
+- Добавлен интерфейс для обработчика, находится в ```middleware/BaseMiddleware.php```

@@ -10,7 +10,16 @@ class Route
 {
     use Singleton;
 
+    /**
+     * Список маршрутов
+     * @var
+     */
     private static $routes;
+    /**
+     * Список обработчиков
+     * @var
+     */
+    private static $middlewares;
 
     /**
      * Метод GET
@@ -41,6 +50,9 @@ class Route
      */
     public static function match($url, $method)
     {
+        // Запуск обработчиков
+        self::runMiddlewares();
+
         foreach (self::getRoutes() as $route) {
             if (self::compareRoute($url, $route['url']) and $method === $route['method']) {
                 self::getController($route['controller']);
@@ -51,6 +63,40 @@ class Route
 
         self::error404();
         return false;
+    }
+
+    /**
+     * Добавляет обпаботчик в список
+     * @param $middleware
+     */
+    public static function middleware($middleware)
+    {
+        if(empty(self::$middlewares)){
+            self::$middlewares = new Collection([]);
+            self::$middlewares->add($middleware);
+        }else{
+            self::$middlewares->add($middleware);
+        }
+    }
+
+    /**
+     * Получает список обработчиков в виде массива
+     * @return mixed
+     */
+    private static function getMiddlewares()
+    {
+        return self::$middlewares->toArray();
+    }
+
+    /**
+     *  Запускает по очереди список обработчиков
+     */
+    private static function runMiddlewares()
+    {
+        $middlewares = self::getMiddlewares();
+        foreach ($middlewares as $midd) {
+            self::getMiddleware($midd);
+        }
     }
 
     /**
@@ -162,6 +208,28 @@ class Route
 
         if (class_exists($controllerClass)) {
             $class = new $controllerClass();
+            if (method_exists($class, $method)) {
+                $class->$method();
+            } else {
+                self::error404('Not Method');
+            }
+        } else {
+            self::error404('Not Class!');
+        }
+    }
+
+    /**
+     * Находит обработчик и запускает его метод с названием middleware
+     * @param $middleware
+     */
+    private static function getMiddleware($middleware)
+    {
+        $namespace = '\app\middleware\\';
+        $middlewareClass = $namespace . $middleware;
+        $method = 'middleware';
+
+        if (class_exists($middlewareClass)) {
+            $class = new $middlewareClass();
             if (method_exists($class, $method)) {
                 $class->$method();
             } else {
